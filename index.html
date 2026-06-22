@@ -465,23 +465,259 @@
     .reveal { opacity:0; transform:translateY(28px); transition:opacity .65s, transform .65s; }
     .reveal.visible { opacity:1; transform:none; }
 
-    /* ══ RESPONSIVE ══ */
-    @media(max-width:900px){
-      .hero-inner,.channels-grid,.tech-layout,.market-layout { grid-template-columns:1fr; }
-      .hero-widget { display:none; }
-      .stat-cards,.channel-cards,.aws-grid,.nvidia-grid,.pricing-grid { grid-template-columns:1fr; }
-      .team-grid { grid-template-columns:1fr; max-width:400px; }
-      nav .nav-links { display:none; }
-      .roadmap-row { grid-template-columns:1fr; }
-      .roadmap-row .dot-col,.roadmap-row .r-empty { display:none; }
-      .roadmap-wrap::before { display:none; }
-      .footer-inner { grid-template-columns:1fr 1fr; }
+
+    /* ══════════════════════════════════════════
+       HAMBURGER MENU
+    ══════════════════════════════════════════ */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 6px;
+      background: none;
+      border: none;
+      z-index: 300;
     }
-    @media(max-width:600px){
-      section { padding:3.5rem 1.25rem; }
-      .footer-inner { grid-template-columns:1fr; }
-      .footer-bottom { flex-direction:column; gap:0.5rem; text-align:center; }
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--white);
+      border-radius: 2px;
+      transition: all .3s;
     }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 64px; left: 0; right: 0;
+      background: rgba(10,10,10,0.98);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem 2rem 2rem;
+      z-index: 199;
+      flex-direction: column;
+      gap: 0;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      display: block;
+      color: var(--grey2);
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: 500;
+      padding: 0.9rem 0;
+      border-bottom: 1px solid var(--border);
+      transition: color .2s;
+    }
+    .mobile-menu a:last-child { border-bottom: none; }
+    .mobile-menu a:hover { color: var(--white); }
+    .mobile-menu .btn-primary {
+      margin-top: 1.25rem;
+      text-align: center;
+      display: block;
+      padding: 0.9rem;
+    }
+
+    /* ══════════════════════════════════════════
+       TABLET  (≤ 900px)
+    ══════════════════════════════════════════ */
+    @media (max-width: 900px) {
+
+      /* Nav */
+      nav { padding: 0 1.5rem; }
+      nav .nav-links { display: none; }
+      nav .btn-nav { display: none; }
+      .hamburger { display: flex; }
+
+      /* Hero */
+      .hero-inner {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 3rem 1.5rem;
+        text-align: center;
+      }
+      .hero-title { font-size: 2.2rem; }
+      .hero-sub { font-size: 0.95rem; margin: 0 auto 2rem; }
+      .hero-badge { font-size: 0.72rem; }
+      .hero-ctas { justify-content: center; }
+      .hero-widget { display: none; }
+
+      /* Ticker */
+      .stats-ticker { gap: 2rem; padding: 0.9rem 1.5rem; overflow-x: auto; }
+
+      /* Problem */
+      .problem-headline { font-size: 2rem; }
+      .stat-cards { grid-template-columns: 1fr; gap: 1rem; }
+
+      /* Channels */
+      .channels-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .channel-cards { grid-template-columns: 1fr 1fr; gap: 0.9rem; }
+      .channels-image { max-height: 280px; }
+
+      /* Technology */
+      .tech-layout { grid-template-columns: 1fr; gap: 2rem; }
+
+      /* AWS / NVIDIA */
+      .aws-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
+      .nvidia-grid { grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+      /* Market */
+      .market-layout { grid-template-columns: 1fr; gap: 2.5rem; }
+      .map-wrap img { max-height: 280px; object-fit: cover; }
+
+      /* Team */
+      .team-grid { grid-template-columns: 1fr 1fr; max-width: 100%; gap: 1.5rem; }
+
+      /* Roadmap */
+      .roadmap-wrap::before { display: none; }
+      .roadmap-row { grid-template-columns: 1fr; }
+      .roadmap-row .dot-col, .roadmap-row .r-empty { display: none; }
+      .roadmap-item { margin: 0.5rem 0; }
+
+      /* Pricing */
+      .pricing-grid { grid-template-columns: 1fr; max-width: 480px; margin-left: auto; margin-right: auto; }
+
+      /* Waitlist */
+      .waitlist-form { padding: 1.75rem; }
+
+      /* Footer */
+      .footer-inner { grid-template-columns: 1fr 1fr; gap: 2rem; }
+      footer { padding: 2.5rem 1.5rem 1.5rem; }
+
+      /* Section spacing */
+      section { padding: 4rem 1.5rem; }
+      .section-title { font-size: 2rem; }
+    }
+
+    /* ══════════════════════════════════════════
+       MOBILE  (≤ 600px)
+    ══════════════════════════════════════════ */
+    @media (max-width: 600px) {
+
+      /* Nav */
+      nav { padding: 0 1.25rem; height: 60px; }
+      .nav-logo { font-size: 1rem; }
+      .nav-logo-icon { width: 28px; height: 28px; }
+      .nav-logo-icon img { width: 28px; height: 28px; }
+
+      /* Mobile menu offset to match shorter nav */
+      .mobile-menu { top: 60px; padding: 1.25rem 1.25rem 1.75rem; }
+
+      /* Hero */
+      .hero-inner { padding: 2.5rem 1.25rem; }
+      .hero-title { font-size: 1.85rem; line-height: 1.15; }
+      .hero-sub { font-size: 0.92rem; }
+      .btn-primary, .btn-outline { padding: 0.75rem 1.25rem; font-size: 0.92rem; }
+      .hero-ctas { flex-direction: column; align-items: center; gap: 0.75rem; }
+      .hero-ctas a { width: 100%; text-align: center; justify-content: center; }
+
+      /* Ticker */
+      .stats-ticker { gap: 1.5rem; font-size: 0.78rem; padding: 0.75rem 1.25rem; }
+      .ticker-dot { width: 5px; height: 5px; }
+
+      /* Sections */
+      section { padding: 3.5rem 1.25rem; }
+      .section-title { font-size: 1.75rem; }
+      .section-sub { font-size: 0.92rem; }
+      .section-badge { font-size: 0.68rem; }
+
+      /* Problem */
+      .problem-headline { font-size: 1.65rem; line-height: 1.2; }
+      .stat-num { font-size: 2rem; }
+      .stat-desc { font-size: 0.85rem; }
+      .problem-quote p { font-size: 0.95rem; }
+
+      /* Channels */
+      .channel-cards { grid-template-columns: 1fr; }
+      .channels-image { max-height: 220px; }
+      .channel-card { padding: 1.25rem; }
+      .channel-title { font-size: 0.9rem; }
+      .channel-desc { font-size: 0.82rem; }
+      .channels-cta .btn-primary { width: 100%; justify-content: center; }
+
+      /* Technology */
+      .tech-feature { padding: 1rem 1.25rem; }
+      .tech-feature-title { font-size: 0.9rem; }
+      .tech-feature-desc { font-size: 0.82rem; }
+      .spoilage-card { flex-direction: column; gap: 0.5rem; }
+
+      /* AWS / NVIDIA */
+      .aws-grid { grid-template-columns: 1fr; }
+      .nvidia-grid { grid-template-columns: 1fr; }
+      .aws-card, .nvidia-card { padding: 1.25rem; }
+      .aws-card-title, .nvidia-card-title { font-size: 0.95rem; }
+      .aws-card-desc, .nvidia-card-desc { font-size: 0.82rem; }
+
+      /* AWS / NVIDIA logos */
+      #aws svg, #nvidia svg { width: 56px; }
+
+      /* Market */
+      .market-stat { gap: 1rem; }
+      .market-stat-num { font-size: 1.75rem; min-width: 70px; }
+      .market-stat-desc { font-size: 0.85rem; }
+      .market-quote { font-size: 0.88rem; }
+
+      /* Parallax divider banners */
+      .parallax-section-content p { font-size: 1.15rem !important; }
+      .parallax-section-content .btn-primary { width: 100%; justify-content: center; margin-top: 1rem; }
+
+      /* Team */
+      .team-grid { grid-template-columns: 1fr; max-width: 360px; margin: 2rem auto 0; }
+      .team-card { padding: 2rem 1.5rem; }
+      .team-avatar { width: 100px; height: 100px; }
+      .team-name { font-size: 1.1rem; }
+      .team-bio { font-size: 0.82rem; }
+
+      /* Roadmap */
+      .roadmap-item { padding: 1.25rem; }
+      .phase-title { font-size: 0.9rem; }
+      .phase-desc { font-size: 0.8rem; }
+
+      /* Pricing */
+      .pricing-grid { max-width: 100%; }
+      .pricing-card { padding: 1.5rem; }
+      .pricing-price { font-size: 1.85rem; }
+      .pricing-features li { font-size: 0.82rem; }
+      .pricing-badge-feat { font-size: 0.68rem; white-space: nowrap; }
+
+      /* Waitlist */
+      .waitlist-form { padding: 1.5rem 1.25rem; border-radius: 14px; }
+      .form-group input,
+      .form-group select,
+      .form-group textarea { font-size: 16px; } /* prevents iOS zoom on focus */
+
+      /* Footer */
+      .footer-inner { grid-template-columns: 1fr; gap: 1.75rem; }
+      footer { padding: 2.5rem 1.25rem 1.5rem; }
+      .footer-bottom { flex-direction: column; gap: 0.5rem; text-align: center; }
+      .footer-bottom p { font-size: 0.75rem; }
+      .footer-col h4 { font-size: 0.78rem; margin-bottom: 0.75rem; }
+      .footer-col ul li a { font-size: 0.82rem; }
+      .footer-col address { font-size: 0.82rem; }
+      .footer-tagline { font-size: 0.84rem; }
+      .footer-socials { gap: 0.75rem; }
+
+      /* Widget (hidden on mobile but just in case) */
+      .hero-widget { display: none; }
+    }
+
+    /* ══════════════════════════════════════════
+       SMALL MOBILE  (≤ 380px)
+    ══════════════════════════════════════════ */
+    @media (max-width: 380px) {
+      .hero-title { font-size: 1.6rem; }
+      .problem-headline { font-size: 1.4rem; }
+      .section-title { font-size: 1.55rem; }
+      .stat-num { font-size: 1.75rem; }
+      .market-stat-num { font-size: 1.5rem; }
+      .btn-primary, .btn-outline { font-size: 0.85rem; padding: 0.7rem 1rem; }
+    }
+
   </style>
 </head>
 <body>
@@ -501,7 +737,21 @@
     <li><a href="#team">Team</a></li>
   </ul>
   <a href="#waitlist" class="btn-nav">Start Free Trial</a>
+  <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#channels" onclick="closeMobileMenu()">Product</a>
+  <a href="#technology" onclick="closeMobileMenu()">Technology</a>
+  <a href="#aws" onclick="closeMobileMenu()">AWS & NVIDIA</a>
+  <a href="#market" onclick="closeMobileMenu()">Market</a>
+  <a href="#pricing" onclick="closeMobileMenu()">Pricing</a>
+  <a href="#team" onclick="closeMobileMenu()">Team</a>
+  <a href="#waitlist" class="btn-primary" onclick="closeMobileMenu()">Start Free Trial</a>
+</div>
 
 <!-- ══ HERO ══ -->
 <section id="hero">
@@ -1141,6 +1391,27 @@
     document.getElementById('navbar').style.background =
       window.scrollY > 60 ? 'rgba(10,10,10,0.98)' : 'rgba(10,10,10,0.88)';
   }, { passive: true });
+
+  // ── Hamburger menu
+  const btn = document.getElementById('hamburgerBtn');
+  const menu = document.getElementById('mobileMenu');
+  function closeMobileMenu() {
+    menu.classList.remove('open');
+    btn.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  btn.addEventListener('click', () => {
+    const isOpen = menu.classList.toggle('open');
+    btn.classList.toggle('open', isOpen);
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  });
+  // Close menu on outside click
+  document.addEventListener('click', (e) => {
+    if (!btn.contains(e.target) && !menu.contains(e.target)) closeMobileMenu();
+  });
+  // Close on scroll
+  window.addEventListener('scroll', closeMobileMenu, { passive: true });
+
 </script>
 </body>
 </html>
