@@ -62,14 +62,62 @@
     .footer-bottom { max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; padding-top:1.5rem; border-top:1px solid var(--border); }
     .footer-bottom p { color:var(--grey3); font-size:0.8rem; }
 
-    @media(max-width:900px){
-      nav .nav-links { display:none; }
-      .footer-inner { grid-template-columns:1fr 1fr; }
+
+    /* ══ HAMBURGER ══ */
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; padding: 6px; background: none; border: none; z-index: 300;
     }
-    @media(max-width:600px){
-      main { padding:7rem 1.25rem 3rem; }
-      .footer-inner { grid-template-columns:1fr; }
-      .footer-bottom { flex-direction:column; gap:0.5rem; text-align:center; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--white); border-radius: 2px; transition: all .3s; }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .mobile-menu {
+      display: none; position: fixed; top: 64px; left: 0; right: 0;
+      background: rgba(10,10,10,0.98); backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem 2rem 2rem; z-index: 199;
+      flex-direction: column; gap: 0;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { display: block; color: var(--grey2); text-decoration: none; font-size: 1rem; font-weight: 500; padding: 0.9rem 0; border-bottom: 1px solid var(--border); transition: color .2s; }
+    .mobile-menu a:last-child { border-bottom: none; }
+    .mobile-menu a:hover { color: var(--white); }
+    .mobile-menu .btn-primary { margin-top: 1.25rem; text-align: center; display: block; padding: 0.9rem; }
+
+    @media (max-width: 900px) {
+      nav { padding: 0 1.5rem; }
+      nav .nav-links { display: none; }
+      nav .btn-nav { display: none; }
+      .hamburger { display: flex; }
+      .footer-inner { grid-template-columns: 1fr 1fr; gap: 2rem; }
+      main { padding: 7rem 1.5rem 3.5rem; }
+      .press-item { padding: 1.25rem; }
+    }
+    @media (max-width: 600px) {
+      nav { padding: 0 1.25rem; height: 60px; }
+      .nav-logo { font-size: 1rem; }
+      .nav-logo-icon { width: 28px; height: 28px; }
+      .nav-logo-icon img { width: 28px; height: 28px; }
+      .mobile-menu { top: 60px; padding: 1.25rem 1.25rem 1.75rem; }
+      main { padding: 6rem 1.25rem 3rem; }
+      .page-title { font-size: 1.75rem; }
+      .page-sub { font-size: 0.92rem; }
+      .press-item { padding: 1.1rem; }
+      .press-headline { font-size: 1rem; }
+      .press-excerpt { font-size: 0.84rem; }
+      .legal-h2 { font-size: 1rem; }
+      .legal-p { font-size: 0.88rem; }
+      .legal-ul li { font-size: 0.86rem; }
+      .footer-inner { grid-template-columns: 1fr; gap: 1.75rem; }
+      footer { padding: 2.5rem 1.25rem 1.5rem; }
+      .footer-bottom { flex-direction: column; gap: 0.5rem; text-align: center; }
+      .footer-bottom p { font-size: 0.75rem; }
+      .footer-col address, .footer-col ul li a { font-size: 0.82rem; }
+      .footer-tagline { font-size: 0.84rem; }
+    }
+    @media (max-width: 380px) {
+      .page-title { font-size: 1.5rem; }
     }
   </style>
 </head>
@@ -89,27 +137,41 @@
     <li><a href="index.html#team">Team</a></li>
   </ul>
   <a href="index.html#waitlist" class="btn-nav">Start Free Trial</a>
+  <button class="hamburger" id="hamburgerBtn" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html#channels">Product</a>
+  <a href="index.html#technology">Technology</a>
+  <a href="index.html#aws">AWS & NVIDIA</a>
+  <a href="index.html#market">Market</a>
+  <a href="index.html#pricing">Pricing</a>
+  <a href="index.html#team">Team</a>
+  <a href="index.html#waitlist" class="btn-primary">Start Free Trial</a>
+</div>
 
 <main>
   <div class="page-badge">Contact</div>
   <h1 class="page-title">Get In Touch</h1>
   <p class="page-sub">Questions about the platform, partnership opportunities, or press inquiries — we would love to hear from you.</p>
 
-  <div style="display:grid; grid-template-columns:1.1fr 1fr; gap:3rem; align-items:start;">
+  <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:2rem; align-items:start;">
     <div class="waitlist-form" style="background:var(--card); border:1px solid var(--border); border-radius:18px; padding:2rem;">
       <form onsubmit="event.preventDefault(); const b=document.getElementById('sendBtn'); b.textContent='✓ Message sent!'; b.style.background='#16a34a'; b.disabled=true;">
         <div style="margin-bottom:1.2rem;">
           <label style="display:block; font-size:0.84rem; font-weight:600; margin-bottom:0.5rem; color:var(--grey1);">Full Name</label>
-          <input type="text" placeholder="Your name" required style="width:100%; background:var(--black); border:1px solid var(--border); border-radius:10px; padding:0.85rem 1rem; color:var(--white); font-family:var(--font-b); font-size:0.92rem;" />
+          <input type="text" placeholder="Your name" required style="width:100%; background:var(--black); border:1px solid var(--border); border-radius:10px; padding:0.85rem 1rem; color:var(--white); font-family:var(--font-b); font-size:16px;" />
         </div>
         <div style="margin-bottom:1.2rem;">
           <label style="display:block; font-size:0.84rem; font-weight:600; margin-bottom:0.5rem; color:var(--grey1);">Email Address</label>
-          <input type="email" placeholder="you@example.com" required style="width:100%; background:var(--black); border:1px solid var(--border); border-radius:10px; padding:0.85rem 1rem; color:var(--white); font-family:var(--font-b); font-size:0.92rem;" />
+          <input type="email" placeholder="you@example.com" required style="width:100%; background:var(--black); border:1px solid var(--border); border-radius:10px; padding:0.85rem 1rem; color:var(--white); font-family:var(--font-b); font-size:16px;" />
         </div>
         <div style="margin-bottom:1.2rem;">
           <label style="display:block; font-size:0.84rem; font-weight:600; margin-bottom:0.5rem; color:var(--grey1);">Subject</label>
-          <select style="width:100%; background:var(--black); border:1px solid var(--border); border-radius:10px; padding:0.85rem 1rem; color:var(--white); font-family:var(--font-b); font-size:0.92rem;">
+          <select style="width:100%; background:var(--black); border:1px solid var(--border); border-radius:10px; padding:0.85rem 1rem; color:var(--white); font-family:var(--font-b); font-size:16px;">
             <option>General Inquiry</option>
             <option>Press & Media</option>
             <option>Partnership</option>
@@ -119,7 +181,7 @@
         </div>
         <div style="margin-bottom:1.2rem;">
           <label style="display:block; font-size:0.84rem; font-weight:600; margin-bottom:0.5rem; color:var(--grey1);">Message</label>
-          <textarea placeholder="Tell us how we can help..." style="width:100%; background:var(--black); border:1px solid var(--border); border-radius:10px; padding:0.85rem 1rem; color:var(--white); font-family:var(--font-b); font-size:0.92rem; resize:vertical; min-height:120px;"></textarea>
+          <textarea placeholder="Tell us how we can help..." style="width:100%; background:var(--black); border:1px solid var(--border); border-radius:10px; padding:0.85rem 1rem; color:var(--white); font-family:var(--font-b); font-size:16px; resize:vertical; min-height:120px;"></textarea>
         </div>
         <button type="submit" id="sendBtn" style="width:100%; background:var(--green); color:var(--black); font-weight:700; font-size:1rem; padding:1rem; border:none; border-radius:10px; cursor:pointer;">Send Message</button>
       </form>
@@ -201,5 +263,25 @@
     <p>Built in Nigeria, for Africa</p>
   </div>
 </footer>
+<script>
+
+  const btn = document.getElementById('hamburgerBtn');
+  const menu = document.getElementById('mobileMenu');
+  function closeMobileMenu() {
+    menu.classList.remove('open');
+    btn.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  btn.addEventListener('click', () => {
+    const isOpen = menu.classList.toggle('open');
+    btn.classList.toggle('open', isOpen);
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  });
+  document.addEventListener('click', (e) => {
+    if (!btn.contains(e.target) && !menu.contains(e.target)) closeMobileMenu();
+  });
+  window.addEventListener('scroll', closeMobileMenu, { passive: true });
+
+</script>
 </body>
 </html>
